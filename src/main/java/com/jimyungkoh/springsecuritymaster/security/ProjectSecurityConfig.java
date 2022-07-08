@@ -3,14 +3,11 @@ package com.jimyungkoh.springsecuritymaster.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -35,7 +32,7 @@ public class ProjectSecurityConfig {
                         .antMatchers("/contact").permitAll())
                 .formLogin()
                 .and()
-                .httpBasic();
+                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
@@ -58,16 +55,17 @@ public class ProjectSecurityConfig {
     }*/
 
     //    JDBC based Authentication
-    @Bean
+    /*@Bean
     public UserDetailsService userDetailsService(DataSource dataSource){
         return new JdbcUserDetailsManager(dataSource);
-    }
+    }*/
 
     /* NoOpPasswordEncoder is not recommended for production usage.
      * Use only for non-production level dev!!!!
+     * just for simple JDBC-based Authentication and Custom Authentication
      * */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 }
