@@ -1,7 +1,0 @@
-spring:
-  security:
-    user:
-      name: jimyung
-      password: 123456
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
