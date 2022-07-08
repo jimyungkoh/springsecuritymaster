@@ -4,17 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 @RequiredArgsConstructor
 public class ProjectSecurityConfig {
-
-    private final PasswordEncoder passwordEncoder;
 
     /*
      * /myAccount - Secured
@@ -40,8 +40,8 @@ public class ProjectSecurityConfig {
         return http.build();
     }
 
-    //    In-Memory Authentication: First Way
-    @Bean
+    //    In-Memory Authentication
+    /*@Bean
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails admin = User.withUsername("admin")
                 .passwordEncoder(passwordEncoder::encode)
@@ -55,5 +55,19 @@ public class ProjectSecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(admin, user);
+    }*/
+
+    //    JDBC based Authentication
+    @Bean
+    public UserDetailsService userDetailsService(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
+    }
+
+    /* NoOpPasswordEncoder is not recommended for production usage.
+     * Use only for non-production level dev!!!!
+     * */
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return NoOpPasswordEncoder.getInstance();
     }
 }
