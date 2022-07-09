@@ -15,11 +15,11 @@ public class AccountTransactions {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="account_number")
     private Accounts accounts;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 

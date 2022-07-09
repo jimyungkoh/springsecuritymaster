@@ -15,7 +15,7 @@ public class Loans {
     @Column(name = "loan_number")
     private Long loanNumber;
 
-    @ManyToOne(targetEntity = Customer.class)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
