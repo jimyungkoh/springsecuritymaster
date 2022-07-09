@@ -26,9 +26,9 @@ public class ProjectSecurityConfig {
         http.authorizeRequests(auth -> auth
                         .antMatchers("/myAccount").authenticated()
                         .antMatchers("/myBalance").authenticated()
-                        .antMatchers("/myLoan").authenticated()
-                        .antMatchers("/myCard").authenticated()
-                        .antMatchers("/notice").permitAll()
+                        .antMatchers("/myLoans").authenticated()
+                        .antMatchers("/myCards").authenticated()
+                        .antMatchers("/notices").permitAll()
                         .antMatchers("/contact").permitAll())
                 .formLogin()
                 .and()

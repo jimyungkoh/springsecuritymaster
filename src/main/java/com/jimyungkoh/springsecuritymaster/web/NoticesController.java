@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/notices")
 public class NoticesController {
     @GetMapping
     public String getNotices(String input) {
