@@ -37,13 +37,12 @@ public class ProjectSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().configurationSource(request -> getCorsConfiguration());
 
+        String[] authMatchers = new String[]{"/myAccount", "/myBalance", "/myLoans", "/myCards"};
+        String[] noAuthMatchers = new String[]{"/notices", "/contact"};
+
         http.authorizeRequests(auth -> auth
-                        .antMatchers("/myAccount").authenticated()
-                        .antMatchers("/myBalance").authenticated()
-                        .antMatchers("/myLoans").authenticated()
-                        .antMatchers("/myCards").authenticated()
-                        .antMatchers("/notices").permitAll()
-                        .antMatchers("/contact").permitAll())
+                        .antMatchers(authMatchers).authenticated()
+                        .antMatchers(noAuthMatchers).permitAll())
                 .formLogin()
                 .and()
                 .httpBasic(Customizer.withDefaults());
