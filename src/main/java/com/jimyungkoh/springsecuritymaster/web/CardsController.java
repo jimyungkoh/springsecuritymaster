@@ -1,14 +1,26 @@
 package com.jimyungkoh.springsecuritymaster.web;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.jimyungkoh.springsecuritymaster.entity.Cards;
+import com.jimyungkoh.springsecuritymaster.entity.Customer;
+import com.jimyungkoh.springsecuritymaster.repository.CardsRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/myCard")
+@RequestMapping("/myCards")
+@RequiredArgsConstructor
 public class CardsController {
-    @GetMapping
-    public String getCardDetails(String input) {
-        return "Here are the card details from the DB";
+    private final CardsRepository cardsRepository;
+
+    @PostMapping
+    public List<Cards> getCardDetails(@RequestBody Customer customer) {
+        List<Cards> cards = cardsRepository.findByCustomerId(customer.getId());
+
+        return cards.isEmpty() ? null : cards;
     }
 }
