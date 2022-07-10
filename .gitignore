@@ -34,3 +34,11 @@ build/
 .vscode/
 
 src/main/java/com/jimyungkoh/springsecuritymaster/entity/Role.java
+
+src/main/java/com/jimyungkoh/springsecuritymaster/aop/AspectController.java
+
+src/main/resources/default.sql
+
+src/test/java/com/jimyungkoh/springsecuritymaster/SpringSecurityMasterApplicationTests.java
+
+app.log
