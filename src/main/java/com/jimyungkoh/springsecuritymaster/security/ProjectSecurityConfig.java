@@ -47,9 +47,9 @@ public class ProjectSecurityConfig {
 
         http.authorizeRequests(auth -> auth
 //                        .antMatchers(authMatchers).authenticated()
-                        .antMatchers("/myAccount").hasAuthority("WRITE")
-                        .antMatchers("/myBalance").hasAuthority("READ")
-                        .antMatchers("/myLoans").hasAuthority("DELETE")
+                        .antMatchers("/myAccount").hasRole("USER")
+                        .antMatchers("/myBalance").hasAnyRole("ADMIN", "USER")
+                        .antMatchers("/myLoans").hasRole("ROOT")
                         .antMatchers("/myCards").authenticated()
                         .antMatchers("/user").authenticated()
                         .antMatchers(noAuthMatchers).permitAll())
