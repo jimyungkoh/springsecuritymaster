@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
@@ -37,11 +38,20 @@ public class ProjectSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().configurationSource(request -> getCorsConfiguration());
 
-        String[] authMatchers = new String[]{"/myAccount", "/myBalance", "/myLoans", "/myCards"};
+        http.csrf()
+                .ignoringAntMatchers("/contact")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
+//        String[] authMatchers = new String[]{"/myAccount", "/myBalance", "/myLoans", "/myCards"};
         String[] noAuthMatchers = new String[]{"/notices", "/contact"};
 
         http.authorizeRequests(auth -> auth
-                        .antMatchers(authMatchers).authenticated()
+//                        .antMatchers(authMatchers).authenticated()
+                        .antMatchers("/myAccount").hasAuthority("WRITE")
+                        .antMatchers("/myBalance").hasAuthority("READ")
+                        .antMatchers("/myLoans").hasAuthority("DELETE")
+                        .antMatchers("/myCards").authenticated()
+                        .antMatchers("/user").authenticated()
                         .antMatchers(noAuthMatchers).permitAll())
                 .formLogin()
                 .and()
