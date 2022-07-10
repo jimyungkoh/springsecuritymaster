@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/myAccount")
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountsRepository accountsRepo;
