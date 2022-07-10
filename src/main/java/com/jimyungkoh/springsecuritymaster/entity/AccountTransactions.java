@@ -2,6 +2,8 @@ package com.jimyungkoh.springsecuritymaster.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -15,10 +17,12 @@ public class AccountTransactions {
     @Column(name = "transaction_id")
     private String transactionId;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="account_number")
     private Accounts accounts;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;

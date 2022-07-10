@@ -2,6 +2,8 @@ package com.jimyungkoh.springsecuritymaster.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +17,7 @@ public class Loans {
     @Column(name = "loan_number")
     private Long loanNumber;
 
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
