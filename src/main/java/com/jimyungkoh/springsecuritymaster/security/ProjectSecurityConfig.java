@@ -1,5 +1,8 @@
 package com.jimyungkoh.springsecuritymaster.security;
 
+import com.jimyungkoh.springsecuritymaster.filter.AuthoritiesLoggingAfterFilter;
+import com.jimyungkoh.springsecuritymaster.filter.AuthoritiesLoggingAtFilter;
+import com.jimyungkoh.springsecuritymaster.filter.RequestValidationBeforeFilter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -36,11 +40,12 @@ public class ProjectSecurityConfig {
      * */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().configurationSource(request -> getCorsConfiguration());
 
-        http.csrf()
-                .ignoringAntMatchers("/contact")
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        setCors(http);
+
+        setCsrf(http);
+
+        setHttpFilters(http);
 
 //        String[] authMatchers = new String[]{"/myAccount", "/myBalance", "/myLoans", "/myCards"};
         String[] noAuthMatchers = new String[]{"/notices", "/contact"};
@@ -58,6 +63,26 @@ public class ProjectSecurityConfig {
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    private void setCors(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(request -> getCorsConfiguration());
+    }
+
+    private void setCsrf(HttpSecurity http) throws Exception {
+        http.csrf()
+                .ignoringAntMatchers("/contact")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+
+    private void setHttpFilters(HttpSecurity http) {
+
+        http.addFilterBefore(new RequestValidationBeforeFilter(),
+                        BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingAfterFilter(),
+                        BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(),
+                        BasicAuthenticationFilter.class);
     }
 
     @NotNull
