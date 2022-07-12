@@ -42,3 +42,7 @@ src/main/resources/default.sql
 src/test/java/com/jimyungkoh/springsecuritymaster/SpringSecurityMasterApplicationTests.java
 
 app.log
+
+app.log.2022-07-10.0.gz
+
+app.log.2022-07-11.0.gz
